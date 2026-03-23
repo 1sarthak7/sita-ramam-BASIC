@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sita Ramam — A Love Story Written in Stars</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Crimson+Text:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --night:    #05070f;
+      --deep:     #0a0d1e;
+      --indigo:   #10152e;
+      --gold:     #c9a23e;
+      --gold-lt:  #f0c96b;
+      --amber:    #e8891a;
+      --rose:     #b05060;
+      --cream:    #f0e4cc;
+      --mist:     #c0b090;
+      --muted:    #6a7a8a;
+      --blue-b:   #3a7fba;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--night);
+      color: var(--cream);
+      font-family: 'Crimson Text', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* ─── FILM GRAIN ─── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: .25;
+      mix-blend-mode: overlay;
+    }
+
+    /* ─── HERO ─── */
+    #hero {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 8vh;
+    }
+
+    #butterfly-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-tagline {
+      position: relative;
+      z-index: 5;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(.9rem, 1.8vw, 1.3rem);
+      color: var(--gold-lt);
+      letter-spacing: .35em;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(14px);
+      animation: riseIn 1.6s ease 7.5s forwards;
+    }
+
+    .hero-year {
+      position: relative;
+      z-index: 5;
+      margin-top: .8rem;
+      font-family: 'Cinzel', serif;
+      font-size: clamp(.65rem, 1.1vw, .85rem);
+      letter-spacing: .6em;
+      color: var(--muted);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: riseIn 1.6s ease 8.5s forwards;
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 3.5vh;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      opacity: 0;
+      animation: fadeIn 2s ease 10s forwards;
+      z-index: 5;
+    }
+    .scroll-cue span {
+      font-size: .65rem;
+      letter-spacing: .4em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2.2s ease-in-out 10s infinite;
+    }
+
+    /* ─── SECTION BASE ─── */
+    .section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-inner {
+      max-width: 820px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ─── REVEAL ANIMATIONS ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: .15s; }
+    .reveal-d2 { transition-delay: .35s; }
+    .reveal-d3 { transition-delay: .55s; }
+    .reveal-d4 { transition-delay: .75s; }
+    .reveal-fade {
+      opacity: 0;
+      transition: opacity 1.3s ease;
+    }
+    .reveal-fade.visible { opacity: 1; }
+
+    /* ─── TYPOGRAPHY ─── */
+    .era-tag {
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .6em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+    }
+
+    h2.section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+
+    .body-text {
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      line-height: 1.95;
+      color: var(--mist);
+      font-style: italic;
+      margin-bottom: 1.4rem;
+    }
+
+    /* ─── ORNAMENT ─── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      justify-content: center;
+      margin: 2.5rem auto;
+    }
+    .ornament::before, .ornament::after {
+      content: '';
+      flex: 1;
+      max-width: 100px;
+      height: 1px;
+    }
+    .ornament::before { background: linear-gradient(to right, transparent, var(--gold)); }
+    .ornament::after  { background: linear-gradient(to left,  transparent, var(--gold)); }
+    .ornament-diamond {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ─── SECTION BACKGROUNDS ─── */
+    #s-intro {
+      background: radial-gradient(ellipse at 50% 60%, #0d1530 0%, var(--night) 70%);
+    }
+    #s-characters {
+      background: radial-gradient(ellipse at 30% 50%, #14091c 0%, var(--night) 65%);
+    }
+    #s-letters {
+      background: linear-gradient(180deg, var(--night), #0a0b1a, var(--night));
+    }
+    #s-kashmir {
+      background: radial-gradient(ellipse at 70% 30%, #0a1520 0%, var(--night) 65%);
+    }
+    #s-promise {
+      background: radial-gradient(ellipse at 50% 80%, #180a10 0%, var(--night) 65%);
+    }
+    #s-finale {
+      background: var(--night);
+    }
+
+    /* ─── CHARACTERS GRID ─── */
+    .char-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      margin-top: 3.5rem;
+    }
+    @media(max-width:600px){ .char-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .char-card {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      border: 1px solid rgba(201,162,62,.15);
+      background: rgba(201,162,62,.03);
+      position: relative;
+    }
+    .char-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .char-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.2rem;
+      display: block;
+      line-height: 1;
+    }
+    .char-name {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--gold-lt);
+      margin-bottom: .4rem;
+    }
+    .char-role {
+      font-size: .72rem;
+      letter-spacing: .35em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .char-desc {
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--mist);
+    }
+
+    /* ─── LETTER CARD ─── */
+    .letter-card {
+      position: relative;
+      max-width: 640px;
+      margin: 2.5rem auto 0;
+      padding: 3rem 3.5rem;
+      background: rgba(255, 240, 200, .03);
+      border: 1px solid rgba(201,162,62,.18);
+      text-align: left;
+    }
+    .letter-card::before {
+      content: '\201C';
+      position: absolute;
+      top: -1.2rem;
+      left: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--gold);
+      opacity: .5;
+      line-height: 1;
+    }
+    .letter-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+      line-height: 1.9;
+      color: var(--cream);
+    }
+    .letter-sig {
+      margin-top: 1.5rem;
+      text-align: right;
+      font-family: 'Cinzel', serif;
+      font-size: .78rem;
+      letter-spacing: .2em;
+      color: var(--gold);
+    }
+    @media(max-width:600px){ .letter-card { padding: 2.5rem 2rem; } }
+
+    /* ─── TIMELINE ─── */
+    .timeline {
+      margin-top: 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      text-align: left;
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 1.5rem;
+      top: .5rem;
+      bottom: .5rem;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold) 20%, var(--gold) 80%, transparent);
+    }
+    .tl-item {
+      display: flex;
+      gap: 2.5rem;
+      padding: 0 0 2.5rem 0;
+    }
+    .tl-dot {
+      flex-shrink: 0;
+      width: 3rem;
+      display: flex;
+      align-items: flex-start;
+      padding-top: .35rem;
+      justify-content: center;
+    }
+    .tl-dot-inner {
+      width: 8px; height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gold);
+    }
+    .tl-content-year {
+      font-family: 'Cinzel', serif;
+      font-size: .7rem;
+      letter-spacing: .4em;
+      color: var(--gold);
+      margin-bottom: .4rem;
+    }
+    .tl-content-text {
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.75;
+      color: var(--mist);
+    }
+
+    /* ─── KASHMIR QUOTE ─── */
+    .big-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-style: italic;
+      color: var(--cream);
+      line-height: 1.65;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .big-quote-attr {
+      margin-top: 1.5rem;
+      font-family: 'Cinzel', serif;
+      font-size: .72rem;
+      letter-spacing: .4em;
+      color: var(--gold);
+    }
+
+    /* ─── PROMISE SECTION ─── */
+    .promise-ring {
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,162,62,.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2.5rem;
+      position: relative;
+    }
+    .promise-ring::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,162,62,.15);
+    }
+    .promise-ring-emoji { font-size: 3.5rem; }
+
+    /* ─── FINALE ─── */
+    #s-finale .finale-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(3rem, 9vw, 7rem);
+      font-weight: 400;
+      color: var(--cream);
+      line-height: 1.05;
+      letter-spacing: .05em;
+    }
+    #s-finale .finale-sub {
+      font-size: .8rem;
+      letter-spacing: .5em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 1.2rem;
+    }
+    #s-finale .credits {
+      margin-top: 4rem;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 2;
+    }
+
+    /* ─── FLOATING BUTTERFLY BG ─── */
+    .bg-b-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes riseIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes pulse {
+      0%,100% { opacity: .3; transform: scaleY(0.7); }
+      50%      { opacity: 1; transform: scaleY(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       HERO — BUTTERFLY TITLE CARD
+  ═══════════════════════════════════ -->
+  <section id="hero">
+    <canvas id="butterfly-canvas"></canvas>
+    <p class="hero-tagline">యుద్ధంతో రాసిన ప్రేమ కథ &nbsp;·&nbsp; A Love Story Written in War</p>
+    <p class="hero-year">India · 1964</p>
+    <div class="scroll-cue">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       INTRO
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-intro">
+    <div class="section-inner">
+      <div class="era-tag reveal reveal-d1">Kashmir · Winter · 1964</div>
+      <h2 class="section-title reveal reveal-d2">There was a love story.</h2>
+      <div class="ornament reveal reveal-d3"><div class="ornament-diamond"></div></div>
+      <p class="body-text reveal reveal-d3">
+        In the snow-kissed valleys of Kashmir, amid the echoes of distant gunfire and the silence
+        between battles, a soldier with no family received a letter from a stranger — a woman who
+        called herself his wife.
+      </p>
+      <p class="body-text reveal reveal-d4">
+        He did not know her face. He did not know her name. But he knew, with every beat of his
+        soldier's heart, that he would find her, wherever destiny had hidden her.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       CHARACTERS
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-characters">
+    <div class="section-inner">
+      <div class="era-tag reveal reveal-d1">The Lovers</div>
+      <h2 class="section-title reveal reveal-d2">Ram & Sita</h2>
+      <div class="ornament reveal reveal-d3"><div class="ornament-diamond"></div></div>
+      <div class="char-grid">
+        <div class="char-card reveal reveal-d3">
+          <span class="char-icon">⚔</span>
+          <div class="char-name">Lieutenant Ram</div>
+          <div class="char-role">Soldier · Orphan · Dreamer</div>
+          <p class="char-desc">
+            An army officer raised without family, who found love in words written on yellowed paper —
+            letters arriving without an address, from a woman who called herself his wife.
+          </p>
+        </div>
+        <div class="char-card reveal reveal-d4">
+          <span class="char-icon">🦋</span>
+          <div class="char-name">Sita Mahalakshmi</div>
+          <div class="char-role">Princess · Secret-Keeper · Soul</div>
+          <p class="char-desc">
+            A woman who hid her true identity behind a name borrowed from devotion, who loved
+            entirely through letters, and kept every promise across the chasm of time.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       THE LETTERS
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-letters">
+    <div class="section-inner">
+      <div class="era-tag reveal reveal-d1">The Letters</div>
+      <h2 class="section-title reveal reveal-d2">Words Across the Distance</h2>
+      <div class="ornament reveal reveal-d3"><div class="ornament-diamond"></div></div>
+
+      <div class="letter-card reveal reveal-d3">
+        <p class="letter-body">
+          They said war was no place for love. But love, it seems, had never read those orders.
+          He wrote letters he could not send. She wrote letters with no return address.
+          And somewhere between the written word and the unspoken longing,
+          two souls found each other — in the only language that crosses every border.
+        </p>
+        <div class="letter-sig">— Lt. Ram · To Sita Mahalakshmi</div>
+      </div>
+
+      <div class="timeline reveal reveal-d4">
+        <div class="tl-item">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-content">
+            <div class="tl-content-year">First Letter</div>
+            <p class="tl-content-text">A woman named Sita writes to an orphan soldier she has never met, calling him her husband. She signs it with no address.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-content">
+            <div class="tl-content-year">The Search</div>
+            <p class="tl-content-text">Ram writes back to every letter, collecting clues like breadcrumbs — determined to find the face behind the words.</p>
+          </div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-content">
+            <div class="tl-content-year">The Train</div>
+            <p class="tl-content-text">On a chance encounter aboard a moving train, he speaks a riddle from her letter aloud — and someone on that train recognises it.</p>
+          </div>
+        </div>
+        <div class="tl-item" style="padding-bottom:0">
+          <div class="tl-dot"><div class="tl-dot-inner"></div></div>
+          <div class="tl-content">
+            <div class="tl-content-year">The Promise</div>
+            <p class="tl-content-text">They meet. They fall in love. And then war tears them apart — leaving one final, undelivered letter that carries the weight of forever.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       KASHMIR QUOTE
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-kashmir">
+    <div class="section-inner">
+      <div class="big-quote reveal-fade">
+        "Butterflies do not know the colour of their own wings — but the human eye knows
+        how beautiful they are. Like that, you don't know how beautiful you are. But I do."
+      </div>
+      <div class="big-quote-attr reveal-fade" style="transition-delay:.5s">
+        — Lieutenant Ram
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       THE PROMISE
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-promise">
+    <div class="section-inner">
+      <div class="era-tag reveal reveal-d1">The Promise</div>
+      <div class="promise-ring reveal reveal-d2">
+        <span class="promise-ring-emoji">✉</span>
+      </div>
+      <h2 class="section-title reveal reveal-d2">One Letter. Across Time.</h2>
+      <div class="ornament reveal reveal-d3"><div class="ornament-diamond"></div></div>
+      <p class="body-text reveal reveal-d3">
+        Twenty years later. A young woman named Afreen is tasked with delivering a single letter
+        from Ram to Sita. She does not know what the letter holds. She does not know that finding
+        Sita will unravel the most beautiful love story she has ever heard.
+      </p>
+      <p class="body-text reveal reveal-d4">
+        Some love stories are not meant to be witnessed by those who live them —
+        they are meant to be discovered by those who come after.
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       FINALE
+  ═══════════════════════════════════ -->
+  <section class="section" id="s-finale">
+    <canvas class="bg-b-canvas" id="bg-butterflies"></canvas>
+    <div class="section-inner">
+      <div class="era-tag reveal reveal-d1">2022</div>
+      <h1 class="finale-title reveal reveal-d2">Sita<br>Ramam</h1>
+      <div class="ornament reveal reveal-d3"><div class="ornament-diamond"></div></div>
+      <div class="finale-sub reveal reveal-d3">A love story for all time</div>
+      <p class="credits reveal reveal-d4">
+        Directed by Hanu Raghavapudi<br>
+        Starring Dulquer Salmaan &nbsp;·&nbsp; Mrunal Thakur &nbsp;·&nbsp; Rashmika Mandanna<br>
+        Music by Vishal Chandrasekhar &nbsp;·&nbsp; Cinematography by PS Vinod<br>
+        Produced by Vyjayanthi Movies
+      </p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════ -->
+  <script>
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  //  BUTTERFLY TITLE CARD ANIMATION
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  (function() {
+    const canvas = document.getElementById('butterfly-canvas');
+    const ctx    = canvas.getContext('2d');
+    let W, H, butterflies = [], stars = [];
+    let startTime = null;
+    let animId;
+
+    // ── Stars ──
+    function makeStars() {
+      stars = Array.from({ length: 220 }, () => ({
+        x: Math.random() * W, y: Math.random() * H,
+        r: .4 + Math.random() * 1.4,
+        a: .3 + Math.random() * .65,
+        speed: .003 + Math.random() * .007,
+        off: Math.random() * Math.PI * 2
+      }));
+    }
+    function drawStars(t) {
+      stars.forEach(s => {
+        const a = s.a * (.5 + .5 * Math.sin(t * s.speed + s.off));
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(220,225,255,${a})`;
+        ctx.fill();
+      });
+    }
+
+    // ── Sample text pixels ──
+    function sampleTextPixels() {
+      const off = document.createElement('canvas');
+      off.width = W; off.height = H;
+      const oc  = off.getContext('2d');
+
+      const fs  = Math.min(W / 7, 145, H / 3.5);
+      oc.font   = `600 ${fs}px 'Cinzel', serif`;
+      oc.fillStyle   = '#fff';
+      oc.textAlign   = 'center';
+      oc.textBaseline = 'middle';
+
+      const lh  = fs * 1.35;
+      oc.fillText('SITA',  W / 2, H / 2 - lh / 2);
+      oc.fillText('RAMAM', W / 2, H / 2 + lh / 2);
+
+      const img  = oc.getImageData(0, 0, W, H);
+      const pts  = [];
+      const step = Math.max(5, Math.round(W / 160));
+
+      for (let y = 0; y < H; y += step)
+        for (let x = 0; x < W; x += step)
+          if (img.data[(y * W + x) * 4 + 3] > 140)
+            pts.push({ x, y });
+
+      // Shuffle so butterflies arrive in random order
+      for (let i = pts.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pts[i], pts[j]] = [pts[j], pts[i]];
+      }
+      return pts;
+    }
+
+    // ── Butterfly class ──
+    class Butterfly {
+      constructor(tx, ty, idx, total) {
+        this.tx = tx; this.ty = ty;
+        this.x  = Math.random() * W;
+        this.y  = Math.random() * H;
+        this.vx = (Math.random() - .5) * 3;
+        this.vy = (Math.random() - .5) * 3;
+        this.wp = Math.random() * Math.PI * 2;           // wing phase
+        this.ws = .06 + Math.random() * .07;             // wing speed
+        this.sz = 3.5 + Math.random() * 3.5;
+        // Gold (70 %) or blue (30 %)
+        const g = Math.random() < .7;
+        this.hue  = g ? 38 + Math.random() * 18 : 205 + Math.random() * 25;
+        this.sat  = 75 + Math.random() * 25;
+        this.lit  = 55 + Math.random() * 20;
+        this.al   = .6 + Math.random() * .4;
+        // Stagger: each butterfly waits a slightly different time
+        this.delay = (idx / total) * 1400;  // spread over 1.4 s
+        this.arrived = false;
+      }
+
+      draw() {
+        const wf  = Math.cos(this.wp);
+        const wx  = this.sz * 1.5 * Math.abs(wf);
+        const wy  = this.sz * .85;
+        const col = `hsl(${this.hue},${this.sat}%,${this.lit}%)`;
+
+        ctx.save();
+        ctx.globalAlpha = this.al;
+        ctx.translate(this.x, this.y);
+
+        // Upper wings
+        ctx.fillStyle = col;
+        ctx.strokeStyle = `hsla(${this.hue},${this.sat}%,${this.lit + 20}%,.25)`;
+        ctx.lineWidth = .6;
+        ctx.beginPath(); ctx.ellipse(-wx * .55, -wy * .3, wx * .75, wy * .85, -.38, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.ellipse( wx * .55, -wy * .3, wx * .75, wy * .85,  .38, 0, Math.PI * 2);
+        ctx.fill(); ctx.stroke();
+
+        // Lower wings (smaller)
+        ctx.globalAlpha = this.al * .65;
+        ctx.beginPath(); ctx.ellipse(-wx * .42,  wy * .45, wx * .5, wy * .55, -.2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.ellipse( wx * .42,  wy * .45, wx * .5, wy * .55,  .2, 0, Math.PI * 2); ctx.fill();
+
+        // Body
+        ctx.globalAlpha = this.al;
+        ctx.fillStyle = '#1a0e00';
+        ctx.beginPath(); ctx.ellipse(0, 0, 1, this.sz * .72, 0, 0, Math.PI * 2); ctx.fill();
+
+        // Antennae
+        ctx.strokeStyle = `hsla(${this.hue},${this.sat}%,${this.lit}%,.5)`;
+        ctx.lineWidth = .8;
+        ctx.beginPath(); ctx.moveTo(0, -this.sz * .5); ctx.lineTo(-this.sz * .8, -this.sz * 1.4); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, -this.sz * .5); ctx.lineTo( this.sz * .8, -this.sz * 1.4); ctx.stroke();
+
+        ctx.restore();
+      }
+
+      update(homingElapsed, homing) {
+        this.wp += this.ws;
+
+        if (!homing || homingElapsed < this.delay) {
+          // Free flutter
+          this.vx += (Math.random() - .5) * .45;
+          this.vy += (Math.random() - .5) * .45;
+          const spd = Math.hypot(this.vx, this.vy);
+          if (spd > 2.8) { this.vx *= 2.8 / spd; this.vy *= 2.8 / spd; }
+          this.x += this.vx; this.y += this.vy;
+          // Soft walls
+          if (this.x < 30) this.vx += .4;
+          if (this.x > W - 30) this.vx -= .4;
+          if (this.y < 30) this.vy += .4;
+          if (this.y > H - 30) this.vy -= .4;
+        } else {
+          // Ease to target
+          const dx = this.tx - this.x, dy = this.ty - this.y;
+          const d  = Math.hypot(dx, dy);
+          this.x += dx * .06;
+          this.y += dy * .06;
+          if (d < 1.5) this.arrived = true;
+          // Subtle hover wobble once near
+          if (this.arrived) {
+            const t2 = homingElapsed * .001;
+            this.x += Math.sin(t2 * 2.5 + this.wp) * .4;
+            this.y += Math.cos(t2 * 2.0 + this.wp) * .4;
+          }
+        }
+      }
+    }
+
+    // ── Init ──
+    function init() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      makeStars();
+      const pts = sampleTextPixels();
+      butterflies = pts.map((p, i) => new Butterfly(p.x, p.y, i, pts.length));
+      startTime = null;
+    }
+
+    // ── Animate ──
+    function animate(ts) {
+      animId = requestAnimationFrame(animate);
+      if (!startTime) startTime = ts;
+      const elapsed = ts - startTime;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // Background
+      const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W,H) * .72);
+      bg.addColorStop(0, '#0d1226');
+      bg.addColorStop(1, '#05070f');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      drawStars(elapsed);
+
+      const HOMING_AFTER = 3000;   // 3 s free, then home
+      const homing = elapsed > HOMING_AFTER;
+      const hEl    = homing ? elapsed - HOMING_AFTER : 0;
+
+      butterflies.forEach(b => { b.update(hEl, homing); b.draw(); });
+    }
+
+    // Font must be loaded before sampling pixels
+    document.fonts.ready.then(() => {
+      init();
+      cancelAnimationFrame(animId);
+      animId = requestAnimationFrame(animate);
+    });
+
+    window.addEventListener('resize', () => {
+      cancelAnimationFrame(animId);
+      init();
+      animId = requestAnimationFrame(animate);
+    });
+  })();
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  //  BACKGROUND BUTTERFLIES (finale section)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  (function() {
+    const canvas = document.getElementById('bg-butterflies');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const parent = canvas.parentElement;
+    let bgs = [];
+    let animId2;
+
+    function resize() {
+      canvas.width  = parent.offsetWidth;
+      canvas.height = parent.offsetHeight;
+    }
+
+    function spawnBg() {
+      return {
+        x: Math.random() * canvas.width,
+        y: canvas.height + 20,
+        vx: (Math.random() - .5) * .8,
+        vy: -(.5 + Math.random() * .8),
+        sz: 3 + Math.random() * 5,
+        wp: Math.random() * Math.PI * 2,
+        ws: .05 + Math.random() * .06,
+        hue: Math.random() < .6 ? 42 + Math.random() * 15 : 210 + Math.random() * 20,
+        al: .15 + Math.random() * .2,
+      };
+    }
+
+    function drawBg(b) {
+      const wf = Math.cos(b.wp);
+      const wx = b.sz * 1.4 * Math.abs(wf);
+      const wy = b.sz * .8;
+      ctx.save();
+      ctx.globalAlpha = b.al;
+      ctx.translate(b.x, b.y);
+      ctx.fillStyle = `hsl(${b.hue},80%,65%)`;
+      ctx.beginPath(); ctx.ellipse(-wx * .5, -wy * .3, wx * .65, wy * .8, -.3, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse( wx * .5, -wy * .3, wx * .65, wy * .8,  .3, 0, Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+
+    function loop2() {
+      animId2 = requestAnimationFrame(loop2);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (Math.random() < .04) bgs.push(spawnBg());
+      bgs = bgs.filter(b => b.y > -30);
+      bgs.forEach(b => {
+        b.wp += b.ws;
+        b.x += b.vx; b.y += b.vy;
+        drawBg(b);
+      });
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    animId2 = requestAnimationFrame(loop2);
+  })();
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  //  INTERSECTION OBSERVER — SCROLL REVEAL
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  (function() {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal, .reveal-fade').forEach(el => io.observe(el));
+  })();
+  </script>
+</body>
+</html>
